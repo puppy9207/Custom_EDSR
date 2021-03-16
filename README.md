@@ -10,3 +10,4 @@ custom_EDSR
     ├─after
     └─before
 ```
+- [Pre-train model](https://cv.snu.ac.kr/research/EDSR/models/edsr_baseline_x4-6b446fab.pt) 
