@@ -7,7 +7,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+*pt
 # C extensions
 *.so
 
@@ -150,3 +150,5 @@ Thumbs.db #thumbnail cache on Windows
 
 
 # End of https://www.toptal.com/developers/gitignore/api/python
+
+/image
