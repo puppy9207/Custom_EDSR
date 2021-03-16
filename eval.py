@@ -35,13 +35,14 @@ model.load_state_dict(torch.load("edsr_baseline_x4-6b446fab.pt"))
 # model execute and save image
 file_list = os.listdir(BEFORE_PATH)
 print(file_list)
-for file in file_list:
-    full_file = os.path.join(BEFORE_PATH+file)
-    img = image_loader(full_file)
-    output = model(img)
-    #Adjust values above 255 to 255
-    normalized = output.clamp(0, 255)
-    normalized = normalized.squeeze()
-    tensor_cpu = normalized.permute(1,2,0).byte().cpu()
-    after_file = os.path.join(AFTER_PATH,file)
-    imageio.imwrite(after_file, tensor_cpu.numpy())
+with torch.no_grad():
+    for file in file_list:
+        full_file = os.path.join(BEFORE_PATH+file)
+        img = image_loader(full_file)
+        output = model(img)
+        #Adjust values above 255 to 255
+        normalized = output.clamp(0, 255)
+        normalized = normalized.squeeze()
+        tensor_cpu = normalized.permute(1,2,0).byte().cpu()
+        after_file = os.path.join(AFTER_PATH,file)
+        imageio.imwrite(after_file, tensor_cpu.numpy())
