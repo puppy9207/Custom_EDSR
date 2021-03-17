@@ -10,6 +10,7 @@ from PIL import Image
 import imageio
 import os
 import numpy as np
+import time
 
 def image_loader(image_name):
     """load image, returns cuda tensor"""
@@ -31,9 +32,12 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = EDSR().to(DEVICE)
 # EDSR pre-trained model. It is 64 feats, scale 4 model
 model.load_state_dict(torch.load("edsr_baseline_x4-6b446fab.pt"))
-
 # model execute and save image
 file_list = os.listdir(BEFORE_PATH)
+
+
+start = time.time()
+temp = []
 print(file_list)
 with torch.no_grad():
     for file in file_list:
@@ -45,4 +49,6 @@ with torch.no_grad():
         normalized = normalized.squeeze()
         tensor_cpu = normalized.permute(1,2,0).byte().cpu()
         after_file = os.path.join(AFTER_PATH,file)
+        temp.append([after_file,tensor_cpu.numpy()])
         imageio.imwrite(after_file, tensor_cpu.numpy())
+print("time : {}".format(time.time()-start))
